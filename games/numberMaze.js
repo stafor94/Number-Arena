@@ -1,4 +1,4 @@
-import { $$ } from './utils.js';
+import { $$, onTouchTap } from './utils.js';
 
 export const numberMazeGame = {
   id: 'number_maze',
@@ -14,7 +14,9 @@ export const numberMazeGame = {
     let position = puzzle.start;
     const draw = () => {
       gameEl.innerHTML = `<div class="stack"><p class="small">현재 칸의 숫자만큼 상하좌우로 정확히 이동하세요.</p><div class="grid" style="grid-template-columns:repeat(${puzzle.size},1fr)">${puzzle.map.map((n, i) => `<button class="cell ${i === position ? 'active ' : ''}${i === puzzle.start ? 'start ' : ''}${i === puzzle.end ? 'end ' : ''}" data-i="${i}">${i === puzzle.start ? 'S' : i === puzzle.end ? 'E' : n}</button>`).join('')}</div></div>`;
-      $$('.cell', gameEl).forEach((button) => { button.onclick = () => move(Number(button.dataset.i)); });
+      $$('.cell', gameEl).forEach((button) => {
+        onTouchTap(button, () => move(Number(button.dataset.i)));
+      });
     };
     const move = (next) => {
       const size = puzzle.size;

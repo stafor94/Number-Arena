@@ -1,4 +1,4 @@
-import { $$, rand } from './utils.js';
+import { $$, onTouchTap, rand } from './utils.js';
 
 export const numberLockGame = {
   id: 'number_lock',
@@ -24,13 +24,13 @@ export const numberLockGame = {
     gameEl.innerHTML = `<div class="stack"><h2>${puzzle.digits}자리 비밀번호</h2>${puzzle.hints.map((hint) => `<div class="badge">${hint}</div>`).join('')}<div class="expr" id="lock">${'-'.repeat(puzzle.digits)}</div><div class="keypad">${[1, 2, 3, 4, 5, 6, 7, 8, 9, '←', 0, 'OK'].map((key) => `<button class="key">${key}</button>`).join('')}</div></div>`;
 
     $$('.key', gameEl).forEach((button) => {
-      button.onclick = () => {
+      onTouchTap(button, () => {
         const key = button.textContent;
         if (key === '←') input = input.slice(0, -1);
         else if (key === 'OK') input === puzzle.code.join('') ? clear() : wrong();
         else if (input.length < puzzle.digits) input += key;
         gameEl.querySelector('#lock').textContent = input.padEnd(puzzle.digits, '-');
-      };
+      });
     });
   },
 };
