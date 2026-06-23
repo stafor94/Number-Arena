@@ -4,11 +4,10 @@ import { numberPathGame } from './games/numberPath.js';
 import { numberLockGame } from './games/numberLock.js';
 import { numberMazeGame } from './games/numberMaze.js';
 import { makeTargetGame } from './games/makeTarget.js';
-import { sumTowerGame } from './games/sumTower.js';
 
 const app = $('#app');
 const toastEl = $('#toast');
-const games = [numberPathGame, numberLockGame, numberMazeGame, makeTargetGame, sumTowerGame];
+const games = [numberPathGame, numberLockGame, numberMazeGame, makeTargetGame];
 const gameMap = Object.fromEntries(games.map((game) => [game.id, game]));
 
 let state;

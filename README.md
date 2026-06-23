@@ -18,7 +18,6 @@
 - **Number Lock Rush**: 힌트를 보고 3~4자리 비밀번호를 맞힙니다.
 - **Step Number Maze**: 현재 칸 숫자만큼 이동해 출구에 도착합니다.
 - **Make Target**: 숫자와 연산자를 눌러 목표값을 만듭니다.
-- **Sum Tower**: 위 칸이 아래 두 칸의 합이 되도록 피라미드를 채웁니다.
 
 ## 주요 기능
 
@@ -43,7 +42,6 @@ games/
   numberLock.js
   numberMaze.js
   makeTarget.js
-  sumTower.js
 ```
 
 ## 파일 설명
@@ -57,7 +55,6 @@ games/
 - `games/numberLock.js`: Number Lock Rush 퍼즐 생성 및 렌더링
 - `games/numberMaze.js`: Step Number Maze 퍼즐 생성 및 렌더링
 - `games/makeTarget.js`: Make Target 퍼즐 생성 및 렌더링
-- `games/sumTower.js`: Sum Tower 퍼즐 생성 및 렌더링
 
 ## 게임 모듈 확장 방식
 
