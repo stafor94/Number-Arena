@@ -1,4 +1,4 @@
-import { $$, rand } from './utils.js';
+import { $$, onTouchTap, rand } from './utils.js';
 
 export const sumTowerGame = {
   id: 'sum_tower',
@@ -14,13 +14,13 @@ export const sumTowerGame = {
   },
   render({ puzzle, gameEl, clear, wrong }) {
     gameEl.innerHTML = `<div class="stack"><p class="small">위 칸 = 아래 두 칸의 합</p><div class="tower">${puzzle.rows.map((row, r) => `<div class="tower-row">${row.map((value, c) => puzzle.hidden.has(`${r},${c}`) ? `<input inputmode="numeric" data-k="${r},${c}">` : `<div class="tower-box">${value}</div>`).join('')}</div>`).join('')}</div><button class="btn" id="ok">제출</button></div>`;
-    gameEl.querySelector('#ok').onclick = () => {
+    onTouchTap(gameEl.querySelector('#ok'), () => {
       let ok = true;
       $$('input', gameEl).forEach((input) => {
         const [row, col] = input.dataset.k.split(',').map(Number);
         if (Number(input.value) !== puzzle.rows[row][col]) ok = false;
       });
       ok ? clear() : wrong();
-    };
+    });
   },
 };

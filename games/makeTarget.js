@@ -1,4 +1,4 @@
-import { $$, rand } from './utils.js';
+import { $$, onTouchTap, rand } from './utils.js';
 
 export const makeTargetGame = {
   id: 'make_target',
@@ -27,10 +27,25 @@ export const makeTargetGame = {
     };
     const draw = () => {
       gameEl.innerHTML = `<div class="stack"><h2>목표: ${puzzle.target}</h2><div class="expr">${expression.join(' ') || '식을 입력하세요'}</div><div class="tokens">${puzzle.numbers.map((n, i) => `<button class="token" data-n="${i}">${n}</button>`).join('')}${puzzle.operators.map((op) => `<button class="token" data-o="${op}">${op}</button>`).join('')}</div><div class="row"><button class="btn secondary" id="del">지우기</button><button class="btn" id="ok">제출</button></div></div>`;
-      $$('[data-n]', gameEl).forEach((button) => { button.onclick = () => { expression.push(button.textContent); draw(); }; });
-      $$('[data-o]', gameEl).forEach((button) => { button.onclick = () => { if (expression.length % 2) expression.push(button.textContent); draw(); }; });
-      gameEl.querySelector('#del').onclick = () => { expression = []; draw(); };
-      gameEl.querySelector('#ok').onclick = () => expression.length >= 3 && expression.length % 2 && Math.abs(calculate() - puzzle.target) < 1e-9 ? clear() : wrong();
+      $$('[data-n]', gameEl).forEach((button) => {
+        onTouchTap(button, () => {
+          expression.push(button.textContent);
+          draw();
+        });
+      });
+      $$('[data-o]', gameEl).forEach((button) => {
+        onTouchTap(button, () => {
+          if (expression.length % 2) expression.push(button.textContent);
+          draw();
+        });
+      });
+      onTouchTap(gameEl.querySelector('#del'), () => {
+        expression = [];
+        draw();
+      });
+      onTouchTap(gameEl.querySelector('#ok'), () => {
+        expression.length >= 3 && expression.length % 2 && Math.abs(calculate() - puzzle.target) < 1e-9 ? clear() : wrong();
+      });
     };
     draw();
   },

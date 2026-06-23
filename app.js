@@ -1,4 +1,4 @@
-import { $, $$, clamp } from './games/utils.js';
+import { $, $$, clamp, onTouchTap } from './games/utils.js';
 import { storage } from './games/storage.js';
 import { numberPathGame } from './games/numberPath.js';
 import { numberLockGame } from './games/numberLock.js';
@@ -29,10 +29,10 @@ function boot() {
 
 function renderStart() {
   app.innerHTML = `<main class="screen hero"><div class="logo">Number<br>Arena</div><p class="subtitle">모바일 숫자 퍼즐 아케이드</p><section class="panel stack"><label class="small">플레이어 닉네임</label><input id="nick" class="input" maxlength="16" placeholder="Player" value="${storage.nickname}"><button id="start" class="btn">입장하기</button></section></main>`;
-  $('#start').onclick = () => {
+  onTouchTap($('#start'), () => {
     storage.nickname = $('#nick').value;
     renderHome();
-  };
+  });
 }
 
 function renderHome() {
@@ -120,14 +120,14 @@ function renderRanking(active = 'total') {
       ? rows.map((row, index) => `<div class="rank-item"><b>${index + 1}</b><span>${row.nickname}<br><small class="small">Lv.${row.maxLevel} Combo ${row.combo}</small></span><b>${row.score.toLocaleString()}</b></div>`).join('')
       : '<p class="small">아직 기록이 없습니다.</p>';
   }
-  $$('.tab').forEach((button) => { button.onclick = () => renderRanking(button.dataset.tab); });
+  $$('.tab').forEach((button) => { onTouchTap(button, () => renderRanking(button.dataset.tab)); });
   bindNavigation();
 }
 
 function bindNavigation() {
-  $$('[data-go="home"]').forEach((button) => { button.onclick = renderHome; });
-  $$('[data-go="ranking"]').forEach((button) => { button.onclick = () => renderRanking(); });
-  $$('[data-play]').forEach((button) => { button.onclick = () => startGame(button.dataset.play); });
+  $$('[data-go="home"]').forEach((button) => { onTouchTap(button, renderHome); });
+  $$('[data-go="ranking"]').forEach((button) => { onTouchTap(button, () => renderRanking()); });
+  $$('[data-play]').forEach((button) => { onTouchTap(button, () => startGame(button.dataset.play)); });
 }
 
 boot();
