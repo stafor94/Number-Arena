@@ -19,7 +19,7 @@ export const numberPathGame = {
     let activePointerId = null;
     let isFinished = false;
     const used = new Set();
-    gameEl.innerHTML = `<div class="stack"><h2>목표 합계: ${puzzle.target}</h2><div id="sum" class="badge">현재 0</div><div class="grid" style="grid-template-columns:repeat(${puzzle.size},1fr)">${puzzle.cells.map((n, i) => `<button class="cell" data-i="${i}">${n}</button>`).join('')}</div><button class="btn secondary" id="reset">선택 초기화</button></div>`;
+    gameEl.innerHTML = `<div class="stack"><h2>목표 합계: ${puzzle.target}</h2><div id="sum" class="badge">현재 0</div><p class="small">처음 고른 숫자는 다시 탭하면 취소할 수 있어요.</p><div class="grid" style="grid-template-columns:repeat(${puzzle.size},1fr)">${puzzle.cells.map((n, i) => `<button class="cell" data-i="${i}">${n}</button>`).join('')}</div><button class="btn secondary" id="reset">선택 초기화</button></div>`;
     const grid = gameEl.querySelector('.grid');
     const sumEl = gameEl.querySelector('#sum');
     const path = [];
@@ -93,10 +93,17 @@ export const numberPathGame = {
     grid.onpointerdown = (event) => {
       if (event.pointerType !== 'touch') return;
       event.preventDefault();
+      const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('.cell');
+      const index = button ? Number(button.dataset.i) : undefined;
+      if (path.length === 1 && index === path[0]) {
+        removeLast();
+        stopDrag();
+        return;
+      }
       isDragging = true;
       activePointerId = event.pointerId;
       grid.setPointerCapture?.(event.pointerId);
-      chooseAtPoint(event.clientX, event.clientY);
+      choose(button);
     };
     grid.onpointermove = (event) => {
       if (!isDragging || event.pointerId !== activePointerId) return;
